@@ -1,0 +1,60 @@
+<html>
+<head>
+  <title>Jason Pearson</title>
+  <link rel="icon" type="image/png" href="/img/logo.png" />
+  <link rel="stylesheet" media="screen" href="css/main.css">
+</head>
+<body>
+  <div id="menu">
+    <div class="title">FOLDERS</div>
+    <ul>
+      <li class="folder-open">blog
+        <ul>
+          <li class="folder">.git</li>
+          <li class="folder-open">public
+            <ul>
+              <li class="folder">css</li>
+              <li class="folder">js</li>
+              <li class="folder">img</li>
+            </ul>
+          </li>
+          <li class="folder-open">src
+            <ul>
+              <li class="folder">scala</li>
+              <li class="folder">java</li>
+              <li class="folder">php</li>
+            </ul>
+          </li>
+          <li class="folder">test
+            <ul>
+              <li class="folder">scala</li>
+              <li class="folder">java</li>
+              <li class="folder">php</li>
+            </ul></li>
+          <li class="file" data-name="index.html">index.html</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div id="content-pane">
+    <div id="navigation">
+      <div id="back-forward">
+        <div id="back">&nbsp;</div>
+        <div id="forward">&nbsp;</div>
+      </div>
+      <ul id="tabs">
+        <li class="active">index.html</li>
+        <li>about.html</li>
+        <li>app.js</li>
+      </ul>
+      <div id="tab-dropdown"></div>
+    </div>
+    <div id="editor">
+      <div id="line-numbers"></div>
+      <textarea id="content"></textarea>
+    </div>
+  </div>
+  <script type="application/javascript" src="js/jquery-2.0.3.min.js"></script>
+  <script type="application/javascript" src="js/app.js"></script>
+</body>
+</html>
