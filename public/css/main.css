@@ -24,8 +24,8 @@ a:active,a:hover {
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 20%;
-  height: 100%;
+  right: 0px;
+  bottom: 0px;
   padding: 0px;
   background-color: #EEE;
 }
@@ -82,9 +82,9 @@ a:active,a:hover {
 #content-pane {
   position: absolute;
   top: 0px;
-  left: 20%;
-  width: 80%;
-  height: 100%;
+  left: 120px;
+  bottom: 0px;
+  right: 0px;
   background-color: #333;
 }
 
