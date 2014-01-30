@@ -24,15 +24,17 @@ a:active,a:hover {
   position: absolute;
   top: 0px;
   left: 0px;
-  right: 0px;
+  width: 120px;
   bottom: 0px;
   padding: 0px;
   background-color: #EEE;
+  overflow: hidden;
 }
 
 #menu li {
   margin-left: -30px;
   list-style:none;
+  width:1000px;
 }
 
 #menu li:before {
@@ -218,4 +220,15 @@ ul#tabs li.active:after {
   right: 0px;
   bottom: 0px;
   font-family: "Consolas";
+}
+
+#menu-edge {
+  position: absolute;
+  z-index: 1000;
+  top: 0px;
+  bottom: 0px;
+  left: 115px;
+  width: 5px;
+  margin-right:-2px;
+  cursor:col-resize;
 }
