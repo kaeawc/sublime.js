@@ -1,0 +1,221 @@
+li {
+  font-family: "Lucida Grande";
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+div.title {
+  font-family: "Lucida Grande";
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+a:link,a:visited {
+  text-decoration: none;
+  color: #333;
+}
+
+a:active,a:hover {
+  text-decoration: none;
+  color: #666;
+}
+
+#menu {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 20%;
+  height: 100%;
+  padding: 0px;
+  background-color: #EEE;
+}
+
+#menu li {
+  margin-left: -30px;
+  list-style:none;
+}
+
+#menu li:before {
+  content:'';
+  display:inline-block;
+  height:10px;
+  width:8px;
+  margin-right: 5px;
+}
+
+#menu li.folder:before,li.folder-open:before {
+  content:'';
+  display:inline-block;
+  height:10px;
+  width:8px;
+  margin-right: 5px;
+  background-image:url('/public/img/arrow.png');
+  background-size: 100% auto;
+}
+
+#menu li.folder:hover:before,li.folder-open:hover:before {
+  background-image:url('/public/img/arrow_active.png');
+}
+
+#menu li.folder-open:before {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+#menu li.folder-open ul {
+  display: block;
+}
+
+#menu li.folder ul {
+  display: none;
+}
+
+#menu .title {
+  color: #666;
+  margin-left:8px;
+  margin-bottom: -10px;
+}
+
+#content-pane {
+  position: absolute;
+  top: 0px;
+  left: 20%;
+  width: 80%;
+  height: 100%;
+  background-color: #333;
+}
+
+#navigation {
+  width: 100%;
+  height: 40px;
+  background-color: #000;
+}
+
+#back-forward {
+  margin-top: 12px;
+  float: left;
+}
+
+#back, #forward {
+  float: left;
+  height:10px;
+  width:8px;
+  background-size: auto 100%;
+  margin-left: 10px;
+  z-index: 900;
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+
+#forward {
+  background-image:url('/public/img/arrow.png');
+}
+
+#forward:hover {
+  background-image:url('/public/img/arrow_active.png');
+}
+
+#back {
+  background-image:url('/public/img/arrow_flipped.png');
+}
+
+#back:hover {
+  background-image:url('/public/img/arrow_flipped_active.png');
+}
+
+#tabs-dropdown {
+  float: right;
+}
+
+#navigation ul {
+  margin: 0px;
+}
+
+#tabs {
+  float:left;
+  padding: 5px 0px 0px 20px;
+}
+
+ul#tabs li {
+  list-style:none;
+  float:left;
+  background-image: url('/public/img/tabs/tab_inactive.png');
+  background-size: 100% 100%;
+  color:#888;
+  height:23px;
+  margin: 0px 10px 0px 10px;
+  padding: 3px 32px 0px 8px;
+}
+
+ul#tabs li.active {
+  background-image: url('/public/img/tabs/tab_active.png');
+  color:#EEE;
+}
+
+ul#tabs li:before {
+  content: '';
+  position:absolute;
+  background-image: url('/public/img/tabs/tab_inactive_before.png');
+  display:block;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: center left;
+  top:5px;
+  margin-left: -25px;
+  height:26px;
+  width:25px;
+}
+ul#tabs li.active:before {
+  background-image: url('/public/img/tabs/tab_active_before.png');
+  z-index: 500;
+}
+
+ul#tabs li:after {
+  content: 'x';
+  position:absolute;
+  background-image: url('/public/img/tabs/tab_inactive_after.png');
+  display:inline-block;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: center right;
+  padding-top: 2px;
+  margin-left: 20px;
+  margin-right: 5px;
+  top:5px;
+  height:24px;
+  width:30px;
+  z-index: 250;
+  font-size: 10px;
+}
+ul#tabs li.active:after {
+  background-image: url('/public/img/tabs/tab_active_after.png');
+  z-index: 500;
+}
+
+#navigation #tabs li.folder-open:before {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+#navigation #tabs li.folder-open ul {
+  display: block;
+}
+
+#navigation #tabs li.folder ul {
+  display: none;
+}
+
+#editor { 
+  position: absolute;
+  top: 31px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  font-family: "Consolas";
+}
