@@ -1,16 +1,20 @@
 <html>
 <head>
   <title>Jason Pearson</title>
-  <link rel="icon" type="image/png" href="/img/logo.png" />
-  <link rel="stylesheet" media="screen" href="css/main.css">
+  <link rel="icon" type="image/png" href="/public/img/logo.png" />
+  <link rel="stylesheet" media="screen" href="/public/css/main.css">
 </head>
 <body>
   <div id="menu">
     <div class="title">FOLDERS</div>
-    <ul>
+    <ul id="menu-items">
       <li class="folder-open">blog
         <ul>
-          <li class="folder">.git</li>
+          <li class="folder-open">.git
+            <ul>
+              <li class="link"><a href="https://github.com/kaeawc">github</a></li>
+            </ul>
+          </li>
           <li class="folder-open">public
             <ul>
               <li class="folder">css</li>
@@ -39,8 +43,8 @@
   <div id="content-pane">
     <div id="navigation">
       <div id="back-forward">
-        <div id="back">&nbsp;</div>
-        <div id="forward">&nbsp;</div>
+        <div id="back"></div>
+        <div id="forward"></div>
       </div>
       <ul id="tabs">
         <li class="active">index.html</li>
@@ -49,12 +53,10 @@
       </ul>
       <div id="tab-dropdown"></div>
     </div>
-    <div id="editor">
-      <div id="line-numbers"></div>
-      <textarea id="content"></textarea>
-    </div>
+    <div id="editor"></div>
   </div>
-  <script type="application/javascript" src="js/jquery-2.0.3.min.js"></script>
-  <script type="application/javascript" src="js/app.js"></script>
+  <script type="application/javascript" src="/public/js/jquery-2.0.3.min.js"></script>
+  <script data-ace-base="/public/js/ace/" type="text/javascript" charset="utf-8" src="/public/js/ace/ace.js"></script>
+  <script type="application/javascript" src="/public/js/app.js"></script>
 </body>
 </html>
