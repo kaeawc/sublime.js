@@ -3,8 +3,10 @@ menu_edge = $('menu-edge');
 mousedown = false;
 files = {};
 current_tab = 'untitled';
+document.getElementById('editor').style.fontSize='15px';
 
 modes = {
+    'untitled': 'ace/mode/text',
     'js': 'ace/mode/javascript',
     'css': 'ace/mode/css',
     'html': 'ace/mode/html',
@@ -15,97 +17,12 @@ modes = {
     'md': 'ace/mode/markdown'
 }
 
-function Tab(name) {
-
-  this.name = name;
-  this.el   = $('<li class="active">' + name + '</li>');
-
-  this.el.on('click',function() { this.focus(); });
-}
-
-Tab.prototype.focus = function() {
-  $('#tabs').children().removeClass('active');
-  this.el.addClass('active');
-}
-
-Tab.prototype.blur = function() {
-  this.el.removeClass('active');
-}
-
-function ContentArea() {
-
-}
-
-function Menu() {
-
-}
-
-Menu.prototype.createItem = function(name,isFolder) {
-
-  var el = false;
-  var folder = isFolder || false;
-
-  if (folder) {
-    el = $('<li class="folder">' + name + '<ul></ul></li>');
-  } else {
-    el = $('<li class="file">' + name + '</li>');
-  }
-
-  var item = new MenuItem(el,folder);
-}
-
-function MenuItem(id,el,isFolder) {
-  // console.log('creating MenuItem');
-  this.id       = id;
-  this.el       = el;
-  this.isFolder = isFolder;
-  that          = this;
-  this.el.on('click',that.toggle);
-}
-
-var my = false;
-
-MenuItem.prototype.toggle = function(element) {
-
-  console.log(this.id);
-  console.log(this.isFolder);
-
-  if (!this.isFolder) return;
-
-  if (this.el.hasClass('folder')) {
-    this.el.addClass('folder-open');
-    this.el.removeClass('folder');
-  } else {
-    this.el.addClass('folder');
-    this.el.removeClass('folder-open');
-  }
-}
-
-MenuItem.prototype.delete = function() {
-  this.el.delete();
-}
-
-var folders = $('#menu li.folder,#menu li.folder-open');
-var files = $('#menu li.file');
-
 var menuItems = [];
-
-// for(var i = 0; i < files.length; i++) {
-//   item = files.get(i);
-//   item.id = 'file-' + i;
-//   item = $('#file-' + i);
-//   item = new MenuItem(item,false);
-// }
-
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/javascript");
 
 var dragging = false;
-
-$('menu-edge').on('mousedown',function() {
-  dragging = true;
-});
 
 function toggle_menu() {
 
@@ -131,72 +48,29 @@ function toggle_menu_folder(folder) {
     return true;
 }
 
-function get_files() {
-
-    files = [];
-
-    return true;
-}
-
-function update_menu() {
-    for(var i = 0; i < folders.length; i++) {
-        var item = folders.get(i);
-        var id = 'folder-' + i;
-        item.id = id;
-        var el = $('#' + id);
-        var menuItem = new MenuItem(id,el,true);
-        menuItems.push(menuItem);
-    }
-}
-
-body.on('keydown', function(event) {
-
-    console.log('keydown');
-    console.log(event);
-    event.defaultPrevented = true;
-
-    if (event.metaKey) {
-        switch(event.keyCode) {
-            case 75:
-                toggle_menu();
-                break;
-            case 87:
-                close_current_tab();
-                break;
-            default:
-                console.log()
-                break;
-        }
-    }
-});
-
 function close_tab_or_exit() {
-    if (current_tab) {
-        tab = files.indexOf(current_tab);
-        files.splice(tab, 1);
+    tab = get_current_tab();
+    siblings = [];
+    tabs_left = 0;
+
+    if (tab) {
+        siblings = tab.siblings();
+        tab.remove();
+        delete files[current_tab];
+        tabs_left = siblings.length;
     }
 
-    if (files.length() > 0) {
-
+    if (current_tab) {
+        console.log(tabs_left);
+    } else {
+        console.log('should close window')
     }
 }
-
-window.onbeforeunload = close_tab_or_exit;
 
 
 function drag_menu_width(ev) {
     console.log(ev);
 }
-
-menu_edge.on('mousedown', function(ev) {
-    mousedown = true;
-    console.log('dragging menu edge');
-    drag_menu_width(ev);
-});
-
-body.on('mouseup', function(ev) {
-    mousedown = false;
-});
 
 function folder_clicked(folder) {
 
@@ -206,20 +80,6 @@ function folder_clicked(folder) {
         return ul.removeClass('open');
     else
         return ul.addClass('open');
-}
-
-function get_file_url(file_name) {
-
-    var file = $('#' + prefix_id('file', file_name));
-    var parents = file.parents('li.folder');
-    var length = parents['length'];
-    var url = '';
-
-    for (var i = length - 1; i >= 0; i--) {
-        url += '/' + parents[i].id.replace('-folder','');;
-    }
-
-    return url + '/' + file_name;
 }
 
 function get_file_extension(name) {
@@ -280,6 +140,8 @@ function refresh_open_tab(data) {
 
     var extension = get_file_extension(current_tab);
     var mode = modes[extension];
+    console.log('using mode: ' + mode);
+
     var tab = get_current_tab();
 
     if (tab) {
@@ -345,12 +207,61 @@ function load_file(file_name, url) {
 function file_clicked(file) {
 
     var file_name = file.html();
-    var url = get_file_url(file_name);
+    var url = file.data('url');
 
     load_file(file_name, url);
 
     return true;
 }
+
+function create_random_id(length) {
+
+    if (length < 5)
+        length = 5;
+
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < length; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+body.on('keydown', function(event) {
+
+    // console.log('keydown');
+    // console.log(event);
+    event.defaultPrevented = true;
+
+    if (event.metaKey && !event.altKey) {
+        switch(event.keyCode) {
+            case 27:
+                close_tab_or_exit();
+                break;
+            case 75:
+                toggle_menu();
+                break;
+            case 87:
+                close_current_tab();
+                break;
+            default:
+                console.log('key: ' + event.keyCode);
+                break;
+        }
+    }
+});
+
+menu_edge.on('mousedown', function(ev) {
+    dragging = true;
+    mousedown = true;
+    console.log('dragging menu edge');
+    drag_menu_width(ev);
+});
+
+body.on('mouseup', function(ev) {
+    mousedown = false;
+});
 
 $('.folder').on('mouseup', function(event){
 
@@ -366,11 +277,13 @@ $('.folder').on('mouseup', function(event){
         return false;
 });
 
-
 $('.file').on('mouseup', function(event){
 
     if (event.currentTarget != event.target)
         return false;
+
+    if (!event.target.id)
+        event.target.id = create_random_id(20);
 
     var id = event.target.id;
     var element = $('#' + id);
