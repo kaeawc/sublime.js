@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 li {
     font-family: "Lucida Grande";
     font-size: 11px;
@@ -92,7 +96,7 @@ div#image-editor.active {
 }
 
 #menu li.folder ul.open {
-    max-height: 300px;
+    max-height: 2000px;
     visibility: visible;
     transition: all 0.5s;
 }
@@ -173,8 +177,9 @@ div#image-editor.active {
 }
 
 #tabs {
-    float:left;
     padding: 5px 0px 0px 20px;
+    overflow: hidden;
+    width: 3000px;
 }
 
 ul#tabs li {
@@ -182,6 +187,7 @@ ul#tabs li {
     float:left;
     background-image: url('/static/img/tabs/tab_inactive.png');
     background-size: 100% 100%;
+    overflow:hidden;
     color:#888;
     height:23px;
     margin: 0px 10px 0px 10px;

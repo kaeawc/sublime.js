@@ -121,7 +121,6 @@ function create_active_tab(file_name) {
     $('#tabs').append(new_tab);
     var created = $('#' + id);
     created.on('mouseup', on_click_tab);
-    files[file_name] = {'id': id}
     return id;
 }
 
@@ -230,6 +229,17 @@ function fail_ajax(xhr, status, error) {
 }
 
 function load_file(file_name, url) {
+
+    if (file_name == current_tab)
+        return;
+
+    if (files[file_name]) {
+        url = files[file_name]['url'];
+        data = files[file_name]['data'];
+        loaded_file(file_name, url, data);
+        return;
+    }
+
 
     function successfully_loaded(data) {
         loaded_file(file_name, url, data);
