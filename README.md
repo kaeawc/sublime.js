@@ -1,3 +1,3 @@
 # My Blog
 
-For writing.
+For writing and experiments.
