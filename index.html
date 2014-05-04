@@ -24,7 +24,7 @@
                 </ul>
             </li>
             <li class="folder">static
-                <ul class="open">
+                <ul>
                     <li class="folder">css
                         <ul class="open">
                             <li data-url="/static/css/main.css" class="file">main.css</li>
@@ -37,7 +37,26 @@
                     </li>
                     <li class="folder">img
                         <ul class="open">
-                            <li data-url="/static/img/arrow.png" class="file">arrow.png</li>
+                            <li class="folder">arrows
+                                <ul>
+                                    <li data-url="/static/img/arrows/arrow.png" class="file">arrow.png</li>
+                                    <li data-url="/static/img/arrows/arrow_active.png" class="file">arrow_active.png</li>
+                                    <li data-url="/static/img/arrows/arrow_flipped.png" class="file">arrow_flipped.png</li>
+                                    <li data-url="/static/img/arrows/arrow_flipped_active.png" class="file">arrow_flipped_active.png</li>
+                                </ul>
+                            </li>
+                            <li class="folder">tabs
+                                <ul>
+                                    <li data-url="/static/img/tabs/tab_active.png" class="file">tab_active.png</li>
+                                    <li data-url="/static/img/tabs/tab_active_after.png" class="file">tab_active_after.png</li>
+                                    <li data-url="/static/img/tabs/tab_active_before.png" class="file">tab_active_before.png</li>
+                                    <li data-url="/static/img/tabs/tab_inactive.png" class="file">tab_inactive.png</li>
+                                    <li data-url="/static/img/tabs/tab_inactive_after.png" class="file">tab_inactive_after.png</li>
+                                    <li data-url="/static/img/tabs/tab_inactive_before.png" class="file">tab_inactive_before.png</li>
+                                </ul>
+                            </li>
+                            <li data-url="/static/img/logo.png" class="file">logo.png</li>
+                            <li data-url="/static/img/transparent.png" class="file">transparent.png</li>
                         </ul>
                     </li>
                     <li class="folder">js
@@ -47,11 +66,10 @@
                     </li>
                 </ul>
             </li>
-            <li id="file-.gitignore" class="file">.gitignore</li>
-            <li id="file-Icon" class="file">Icon</li>
-            <li id="file-index" class="file">index.html</li>
-            <li id="file-posts" class="file">posts.json</li>
-            <li id="file-README" class="file">README.md</li>
+            <li data-url="/.gitignore" class="file">.gitignore</li>
+            <li data-url="/Icon" class="file">Icon</li>
+            <li data-url="/index.html" class="file">index.html</li>
+            <li data-url="/README.md" class="file">README.md</li>
         </ul>
         <div id="menu-edge"></div>
     </div>
@@ -67,6 +85,7 @@
             <div id="tab-dropdown"></div>
         </div>
         <div id="editor"></div>
+        <div id="image-editor"></div>
     </div>
     <script type="application/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
     <script data-ace-base="/static/js/ace/" type="text/javascript" charset="utf-8" src="/static/js/ace/ace.js"></script>
