@@ -245,8 +245,10 @@ body.on('keydown', function(event) {
             case 87:
                 close_current_tab();
                 break;
+            case 83:
+                save_current_file();
+                break;
             default:
-                console.log('key: ' + event.keyCode);
                 break;
         }
     }
