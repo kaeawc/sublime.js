@@ -1,19 +1,27 @@
 body = $('body');
 menu_edge = $('menu-edge');
 mousedown = false;
-files = {};
+untitled_id = create_random_id(20);
+files = {'untitled': {'id': untitled_id,'data':'','mode':'untitled'}};
 current_tab = 'untitled';
+close_window_next_escape = false;
+$('ul#tabs li').attr('id',untitled_id);
+
 document.getElementById('editor').style.fontSize='15px';
 
 modes = {
+    'gitignore': 'ace/mode/text',
     'untitled': 'ace/mode/text',
     'js': 'ace/mode/javascript',
     'css': 'ace/mode/css',
     'html': 'ace/mode/html',
-    'eot': 'ace/mode/text',
-    'svg': 'ace/mode/text',
-    'ttf': 'ace/mode/text',
-    'woff': 'ace/mode/text',
+    'eot': 'img',
+    'svg': 'img',
+    'ttf': 'img',
+    'woff': 'img',
+    'png': 'img',
+    'gif': 'img',
+    'jpg': 'img',
     'md': 'ace/mode/markdown'
 }
 
@@ -49,22 +57,34 @@ function toggle_menu_folder(folder) {
 }
 
 function close_tab_or_exit() {
+
+    if (close_window_next_escape)
+        window.close();
+
     tab = get_current_tab();
     siblings = [];
     tabs_left = 0;
 
     if (tab) {
         siblings = tab.siblings();
+        tabs_left = siblings.length;
         tab.remove();
         delete files[current_tab];
-        tabs_left = siblings.length;
+        current_tab = false;
     }
 
-    if (current_tab) {
-        console.log(tabs_left);
+    if (tabs_left > 0) {
+        tab = $('#' + siblings[tabs_left - 1].id);
+        current_tab = tab.html();
+        editor.setValue(files[current_tab]['data']);
+        editor.gotoLine(1);
+        tab.addClass('active');
     } else {
-        console.log('should close window')
+        editor.setValue('');
     }
+
+    if (!tab)
+        close_window_next_escape = true;
 }
 
 
@@ -84,8 +104,6 @@ function folder_clicked(folder) {
 
 function get_file_extension(name) {
 
-    console.log('get_file_extension');
-    console.log(name);
     var last = name.lastIndexOf('.');
     last = last + 1;
     var length = name.length;
@@ -98,15 +116,13 @@ function get_file_extension(name) {
 
 function create_active_tab(file_name) {
 
-    var id = prefix_id('tab', file_name);
+    var id = create_random_id(20);
     var new_tab = '<li id="' + id + '" class="active">' + file_name + '</li>';
-    var created = $('#tabs').append(new_tab);
-    return created;
-}
-
-function prefix_id(prefix, name) {
-
-    return prefix + '-' + id_format(name);
+    $('#tabs').append(new_tab);
+    var created = $('#' + id);
+    created.on('mouseup', on_click_tab);
+    files[file_name] = {'id': id}
+    return id;
 }
 
 function id_format(name) {
@@ -120,11 +136,21 @@ function id_format(name) {
     if (last > 0)
         name = name.substr(0, last);
 
+    var name = name.replace('.','');
+
     return name;
 }
 
 function save_current_file() {
-    return true;
+
+    if (current_tab && files[current_tab]) {
+        var extension = get_file_extension(current_tab);
+        files[current_tab]['data'] = editor.getValue();
+        files[current_tab]['mode'] = modes[extension];
+        return true;
+    }
+
+    return false;
 }
 
 function close_current_tab() {
@@ -134,6 +160,11 @@ function close_current_tab() {
 
     tab = $('#tab-' + id_format(current_tab));
     tab.sibling()
+}
+
+function show_image(image_url) {
+    $('#image-editor').css('background-image','url("'+image_url+'")');
+    $('#image-editor').addClass('active');
 }
 
 function refresh_open_tab(data) {
@@ -146,8 +177,17 @@ function refresh_open_tab(data) {
 
     if (tab) {
         tab.addClass('active');
-        editor.setValue(data);
-        editor.getSession().setMode(mode);
+
+        if (mode == 'img') {
+            console.log('showing image')
+            editor.setValue('');
+            show_image(files[current_tab]['url'])
+        } else {
+            editor.setValue(data);
+            editor.gotoLine(1);
+            editor.getSession().setMode(mode);
+            $('#image-editor').removeClass('active');
+        }
         return tab;
     } else {
         return console.warn('Error refreshing current tab.');
@@ -156,10 +196,10 @@ function refresh_open_tab(data) {
 
 function get_current_tab() {
 
-    if (!current_tab)
+    if (!current_tab || !files[current_tab])
         return current_tab;
 
-    return $('#tab-' + id_format(current_tab));
+    return $('#' + files[current_tab]['id']);
 }
 
 function loaded_file(file_name, url, data) {
@@ -168,22 +208,20 @@ function loaded_file(file_name, url, data) {
     var tab = get_current_tab();
 
     if (file_name == current_tab)
-        return refresh_open_tab(data);
+        return true;
 
-    if(current_tab != 'untitled') {
-        if (!save_current_file())
-            return console.warn('Could not save current file: ' + current_tab);
+    save_current_file()
 
-        if (tab)
-            tab.removeClass('active');
-    }
+    if (tab)
+        tab.removeClass('active');
 
     current_tab = file_name;
 
     if (!files[file_name])
-        create_active_tab(file_name);
+        files[file_name] = {'id': create_active_tab(file_name)}
 
-    files[file_name] = url;
+    files[file_name]['url'] = url;
+
     return refresh_open_tab(data);
 }
 
@@ -220,38 +258,33 @@ function create_random_id(length) {
         length = 5;
 
     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var first = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";
 
-    for( var i=0; i < length; i++ )
+    text += first.charAt(Math.floor(Math.random() * first.length));
+
+    for (var i = 0; i < length; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
 }
 
-body.on('keydown', function(event) {
+editor.commands.addCommand({
+    name: 'closeTab',
+    bindKey: {win: 'Ctrl-Esc',  mac: 'Command-Esc'},
+    exec: function(editor) {
+        close_tab_or_exit();
+    },
+    readOnly: false
+});
 
-    // console.log('keydown');
-    // console.log(event);
-    event.defaultPrevented = true;
-
-    if (event.metaKey && !event.altKey) {
-        switch(event.keyCode) {
-            case 27:
-                close_tab_or_exit();
-                break;
-            case 75:
-                toggle_menu();
-                break;
-            case 87:
-                close_current_tab();
-                break;
-            case 83:
-                save_current_file();
-                break;
-            default:
-                break;
-        }
-    }
+editor.commands.addCommand({
+    name: 'toggleMenu',
+    bindKey: {win: 'Ctrl-K',  mac: 'Command-K'},
+    exec: function(editor) {
+        toggle_menu();
+    },
+    readOnly: false
 });
 
 menu_edge.on('mousedown', function(ev) {
@@ -269,6 +302,9 @@ $('.folder').on('mouseup', function(event){
 
     if (event.currentTarget != event.target)
         return false;
+
+    if (!event.target.id)
+        event.target.id = create_random_id(20);
 
     var id = event.target.id;
     var element = $('#' + id);
@@ -295,3 +331,22 @@ $('.file').on('mouseup', function(event){
     else
         return false;
 });
+
+function on_click_tab(event){
+
+    if (event.currentTarget != event.target){
+        return false;
+    }
+
+    var id = event.target.id;
+    var element = $('#' + id);
+    var file_name = element.html();
+
+    if (current_tab != file_name) {
+        var url = files[file_name]['url'];
+        var data = files[file_name]['data'];
+        loaded_file(file_name, url, data);
+    }
+};
+
+$('#' + untitled_id).on('mouseup', on_click_tab);

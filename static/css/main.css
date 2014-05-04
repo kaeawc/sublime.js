@@ -20,6 +20,22 @@ a:active,a:hover {
     color: #666;
 }
 
+div#image-editor {
+    position: absolute;
+    display: none;
+    top: 31px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 100;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+div#image-editor.active {
+    display: block;
+}
+
 #menu {
     position: absolute;
     top: 0px;
@@ -60,23 +76,23 @@ a:active,a:hover {
     height:10px;
     width:8px;
     margin-right: 5px;
-    background-image:url('/static/img/arrow.png');
+    background-image:url('/static/img/arrows/arrow.png');
     background-size: 100% auto;
 }
 
 #menu li.folder:hover:before {
-    background-image:url('/static/img/arrow_active.png');
+    background-image:url('/static/img/arrows/arrow_active.png');
     transform: rotate(0deg);
-    transition: transform 0.5s;
+    transition: all 0.5s;
 }
 
 #menu li.folder-open:before {
     transform: rotate(90deg);
-    transition: transform 0.5s;
+    transition: all 0.5s;
 }
 
 #menu li.folder ul.open {
-    max-height: 1000px;
+    max-height: 300px;
     visibility: visible;
     transition: all 0.5s;
 }
@@ -97,7 +113,6 @@ a:active,a:hover {
 
 .menu-open #content-pane {
     left: 240px;
-    -webkit-transition: left 0.5s;
     transition: left 0.5s;
 }
 
@@ -105,7 +120,6 @@ a:active,a:hover {
     position: absolute;
     top: 0px;
     left: 0px;
-    -webkit-transition: left 0.5s;
     transition: left 0.5s;
     bottom: 0px;
     right: 0px;
@@ -135,19 +149,19 @@ a:active,a:hover {
 }
 
 #forward {
-    background-image:url('/static/img/arrow.png');
+    background-image:url('/static/img/arrows/arrow.png');
 }
 
 #forward:hover {
-    background-image:url('/static/img/arrow_active.png');
+    background-image:url('/static/img/arrows/arrow_active.png');
 }
 
 #back {
-    background-image:url('/static/img/arrow_flipped.png');
+    background-image:url('/static/img/arrows/arrow_flipped.png');
 }
 
 #back:hover {
-    background-image:url('/static/img/arrow_flipped_active.png');
+    background-image:url('/static/img/arrows/arrow_flipped_active.png');
 }
 
 #tabs-dropdown {
@@ -220,11 +234,8 @@ ul#tabs li.active:after {
 }
 
 #navigation #tabs li.folder-open:before {
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
     transform: rotate(90deg);
+    transition: all 0.5s;
 }
 
 #navigation #tabs li.folder-open ul {
